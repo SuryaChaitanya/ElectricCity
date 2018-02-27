@@ -8,20 +8,15 @@ import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,46 +26,41 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.Executor;
 
-public class SelectView extends AppCompatActivity {
-    String url = "";
-    private ProgressDialog pDialog;
-    String result;
-    float totalSum=0;
+public class splash extends AppCompatActivity {
+
     private String TAG = MainActivity.class.getSimpleName();
+
+    private ProgressDialog pDialog;
+    private ListView lv;
+    private String[] xData = new String[2];
+    private float[] yData = new float[2];
+
+    // URL to get contacts JSON
+    private static String url = null;
+    LineChart lineChart;
+    PieChart piechart;
+    String result = null;
+    public static ArrayList<HashMap<String, String>> contactList;
+    float apl1 = 0;
+    float apl2=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.activity_select_view);
+        Intent i = getIntent();
+        Bundle bundle = i.getExtras();
+        url = (String) bundle.get("url");
+        Log.e(TAG, "The received URL is :: " + url);
         if(internetConCheck()== true){
-            url="http://165.227.105.231/sangam/month.php";
-            new SelectView.GetContacts().execute();
+            new splash.GetContacts().execute();
         }
     }
-    public void doneSelection(View v){
-        Button hour = (Button)findViewById(R.id.month);
-        Button day = (Button) findViewById(R.id.day);
-        Button week = (Button) findViewById(R.id.week);
-        switch(v.getId()) {
-            case R.id.month:
-                    url = "http://165.227.105.231/sangam/month.php";
-                break;
-            case R.id.day:
-                url = "http://165.227.105.231/sangam/week.php";
-                break;
-            case R.id.week:
-                url = "http://165.227.105.231/sangam/day.php";
-                break;
-        }
-        show();
-    }
-    public void show(){
-        Intent i = new Intent(this, splash.class);
-        i.putExtra("url", url);
-        startActivity(i);
-    }
-    class GetContacts extends AsyncTask<String, Void, String> {
+
+    private class GetContacts extends AsyncTask<String, Void, String> {
         final String REQUEST_METHOD = "GET";
         final int READ_TIMEOUT = 15000;
         final int CONNECTION_TIMEOUT = 15000;
@@ -79,10 +69,10 @@ public class SelectView extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             // Showing progress dialog
-            pDialog = new ProgressDialog(SelectView.this);
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
+//            pDialog = new ProgressDialog(RealActivity.this);
+//            pDialog.setMessage("Please wait...");
+//            pDialog.setCancelable(false);
+//            pDialog.show();
 
         }
 
@@ -128,50 +118,34 @@ public class SelectView extends AppCompatActivity {
 
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            super.onPostExecute(result);
+//            super.onPostExecute(result);
             // Dismiss the progress dialog
-            if (pDialog.isShowing())
-                pDialog.dismiss();
-            String[] words=result.split(":");
-            System.out.println(words[0]);
-            System.out.println(words[1]);
-            System.out.println(words[2]);
-            System.out.println(words[3]);
-            String[] applia1 = words[1].split(",");
-            String[] applia2 = words[2].split(",");
-            for(int i=1;i<applia1.length-1;i++)
-            {
-                totalSum+=Float.valueOf(applia1[i]);
-            }
-            for(int i=1;i<applia2.length-1;i++)
-            {
-                totalSum+=Float.valueOf(applia2[i]);
-            }
-            float totalMoney;
-            TextView totalval = (TextView) findViewById(R.id.units);
-            totalval.setText("Total units consumed : "+Float.toString(totalSum));
-            TextView totalBal = (TextView) findViewById(R.id.money);
-            if(totalSum > 400)
-            {
-                totalMoney = totalSum * 3;
-            }
-            else if(totalSum > 200){
-                totalMoney = totalSum*2;
-            }
-            else{
-                totalMoney= totalSum;
-            }
-            totalBal.setText("Total Money to be paid: "+Float.toString(totalMoney));
+//            if (pDialog.isShowing())
+//                pDialog.dismiss();
+            /**
+             * Updating parsed JSON data into ListView
+             * */
+
+
+            Intent i=new Intent(splash.this, RealActivity.class);
+            i.putExtra("res", result);
+            startActivity(i);
+            finish();
+
+
+
         }
 
     }
+
+
     private boolean internetConCheck() {
         if (internet_connection()){
             Log.d(TAG, "cool");
             return true;
         }else{
             //create a snackbar telling the user there is no internet connection and issuing a chance to reconnect
-            AlertDialog.Builder alertDialogBuilder= new AlertDialog.Builder(SelectView.this);
+            AlertDialog.Builder alertDialogBuilder= new AlertDialog.Builder(splash.this);
             alertDialogBuilder
                     .setMessage("No internet connection")
                     .setCancelable(false)
@@ -204,9 +178,8 @@ public class SelectView extends AppCompatActivity {
                 activeNetwork.isConnectedOrConnecting();
         return isConnected;
     }
-    public void about(View v){
 
-        Toast.makeText(this,"MADE WITH LOVE BY ELECTRIC CITY",Toast.LENGTH_LONG).show();
 
-    }
+
+
 }

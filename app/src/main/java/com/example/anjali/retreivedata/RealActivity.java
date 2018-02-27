@@ -55,7 +55,7 @@ public class RealActivity extends AppCompatActivity {
     private String[] xData = new String[2];
     private float[] yData = new float[2];
 
-    // URL to get contacts JSON
+    // URL to get contacts JSON+
     private static String url = null;
     LineChart lineChart;
     PieChart piechart;
@@ -68,92 +68,102 @@ public class RealActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_real);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//        Intent i = getIntent();
+//        Bundle bundle = i.getExtras();
+//        url = (String) bundle.get("url");
+//        Log.e(TAG, "The received URL is :: " + url);
+//        if(internetConCheck()== true){
+//            new GetContacts().execute();
+//        }
+
         Intent i = getIntent();
-        Bundle bundle = i.getExtras();
-        url = (String) bundle.get("url");
-        Log.e(TAG, "The received URL is :: " + url);
-        if(internetConCheck()== true){
-            new GetContacts().execute();
-        }
+        String result = i.getStringExtra("res");
+        pieChart(result);
+        TextView aplval = (TextView) findViewById(R.id.Id1val);
+            TextView ap2val = (TextView) findViewById(R.id.Id2val);
+            aplval.setText("Total units consumed by appliance 1 : "+Float.toString(yData[0]));
+            ap2val.setText("Total units consumed by appliance 2 : "+Float.toString(yData[1]));
     }
 
     /**
      * Async task class to get json by making HTTP call
-     */
-    private class GetContacts extends AsyncTask<String, Void, String> {
-        final String REQUEST_METHOD = "GET";
-        final int READ_TIMEOUT = 15000;
-        final int CONNECTION_TIMEOUT = 15000;
+//     */
+//    private class GetContacts extends AsyncTask<String, Void, String> {
+//        final String REQUEST_METHOD = "GET";
+//        final int READ_TIMEOUT = 15000;
+//        final int CONNECTION_TIMEOUT = 15000;
+//
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            // Showing progress dialog
+//            pDialog = new ProgressDialog(RealActivity.this);
+//            pDialog.setMessage("Please wait...");
+//            pDialog.setCancelable(false);
+//            pDialog.show();
+//
+//        }
+//
+//        @Override
+//        protected String doInBackground(String... params) {
+//            String inputLine;
+//            URL myUrl = null;
+//            try {
+//                myUrl = new URL(url);
+//                Log.e(TAG, "the myURL is :: "+myUrl);
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            }
+//            try {
+//                assert myUrl != null;
+//                HttpURLConnection connection = (HttpURLConnection)
+//                        myUrl.openConnection();
+//                connection.setRequestMethod(REQUEST_METHOD);
+//                connection.setReadTimeout(READ_TIMEOUT);
+//                connection.setConnectTimeout(CONNECTION_TIMEOUT);
+//                connection.connect();
+//                InputStreamReader streamReader = new
+//                        InputStreamReader(connection.getInputStream());
+//                //Create a new buffered reader and String Builder
+//                BufferedReader reader = new BufferedReader(streamReader);
+//                StringBuilder stringBuilder = new StringBuilder();
+//                //Check if the line we are reading is not null
+//                while ((inputLine = reader.readLine()) != null) {
+//                    stringBuilder.append(inputLine);
+//                }
+//                //Close our InputStream and Buffered reader
+//                reader.close();
+//                streamReader.close();
+//                //Set our result equal to our stringBuilder
+//                result = stringBuilder.toString();
+//                TAG = "value";
+//                Log.e(TAG, "RESULT : "+result);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return result;
+//        }
+//
+//        protected void onPostExecute(String result) {
+//            super.onPostExecute(result);
+//            super.onPostExecute(result);
+//            // Dismiss the progress dialog
+//            if (pDialog.isShowing())
+//                pDialog.dismiss();
+//            /**
+//             * Updating parsed JSON data into ListView
+//             * */
+//
+//            pieChart(result);
+//            TextView aplval = (TextView) findViewById(R.id.Id1val);
+//            TextView ap2val = (TextView) findViewById(R.id.Id2val);
+//            aplval.setText("Total units consumed by appliance 1 : "+Float.toString(yData[0]));
+//            ap2val.setText("Total units consumed by appliance 2 : "+Float.toString(yData[1]));
+//        }
+//
+//    }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // Showing progress dialog
-            pDialog = new ProgressDialog(RealActivity.this);
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
 
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String inputLine;
-            URL myUrl = null;
-            try {
-                myUrl = new URL(url);
-                Log.e(TAG, "the myURL is :: "+myUrl);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            try {
-                assert myUrl != null;
-                HttpURLConnection connection = (HttpURLConnection)
-                        myUrl.openConnection();
-                connection.setRequestMethod(REQUEST_METHOD);
-                connection.setReadTimeout(READ_TIMEOUT);
-                connection.setConnectTimeout(CONNECTION_TIMEOUT);
-                connection.connect();
-                InputStreamReader streamReader = new
-                        InputStreamReader(connection.getInputStream());
-                //Create a new buffered reader and String Builder
-                BufferedReader reader = new BufferedReader(streamReader);
-                StringBuilder stringBuilder = new StringBuilder();
-                //Check if the line we are reading is not null
-                while ((inputLine = reader.readLine()) != null) {
-                    stringBuilder.append(inputLine);
-                }
-                //Close our InputStream and Buffered reader
-                reader.close();
-                streamReader.close();
-                //Set our result equal to our stringBuilder
-                result = stringBuilder.toString();
-                TAG = "value";
-                Log.e(TAG, "RESULT : "+result);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return result;
-        }
-
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            super.onPostExecute(result);
-            // Dismiss the progress dialog
-            if (pDialog.isShowing())
-                pDialog.dismiss();
-            /**
-             * Updating parsed JSON data into ListView
-             * */
-
-            pieChart(result);
-            TextView aplval = (TextView) findViewById(R.id.Id1val);
-            TextView ap2val = (TextView) findViewById(R.id.Id2val);
-            aplval.setText("Total units consumed by appliance 1 : "+Float.toString(yData[0]));
-            ap2val.setText("Total units consumed by appliance 2 : "+Float.toString(yData[1]));
-        }
-
-    }
     public void pieChart(String result)
     {
        //piechart = (PieChart)findViewById(R.id.idpiechart);
@@ -167,7 +177,7 @@ public class RealActivity extends AppCompatActivity {
         String[] applia1 = words[1].split(",");
         String[] applia2 = words[2].split(",");
         yData[0]=0;
-        yData[1]=1;
+        yData[1]=0;
         for(int i=1;i<applia1.length-1;i++)
         {
             appliance[0][i-1]=Float.valueOf(applia1[i]);
@@ -197,8 +207,8 @@ public class RealActivity extends AppCompatActivity {
         }
 
         ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
-        LineDataSet lineDataSet1 = new LineDataSet(yAXIScos,"fan");
-        LineDataSet lineDataSet2 = new LineDataSet(yAXISsin,"fridge");
+        LineDataSet lineDataSet1 = new LineDataSet(yAXIScos,"Appliance 1");
+        LineDataSet lineDataSet2 = new LineDataSet(yAXISsin,"Appliance 2");
 
         lineDataSet1.setDrawCircles(false);
         lineDataSet1.setColors(Color.RED);
@@ -212,8 +222,8 @@ public class RealActivity extends AppCompatActivity {
         lineChart.setVisibleXRangeMaximum(20f);
         lineChart.invalidate();
         lineChart.refreshDrawableState();
-        xData[0]="AC";
-        xData[1]="fridge";
+        xData[0]="Appliance 1";
+        xData[1]="Appliance 2";
         piechart = (PieChart) findViewById(R.id.pieChart);
         piechart.setRotationEnabled(true);
         piechart.setUsePercentValues(true);
@@ -245,7 +255,7 @@ public class RealActivity extends AppCompatActivity {
                     }
                 }
                 String employee = xData[pos1];
-                Toast.makeText(RealActivity.this, "Appliance " + employee + "\n" + "Units consumed :: " + sales + " KWh", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RealActivity.this, "Appliance " + employee + "\n" + "Units consumed :: " + sales + " unit", Toast.LENGTH_SHORT).show();
 
 
 
@@ -293,50 +303,51 @@ public class RealActivity extends AppCompatActivity {
         legend.setEnabled(true);
 
         legend.setPosition(Legend.LegendPosition.LEFT_OF_CHART);
+        legend.setPosition(Legend.LegendPosition.LEFT_OF_CHART);
 
         //create pie data object
         PieData pieData = new PieData(pieDataSet);
         piechart.setData(pieData);
         piechart.invalidate();
     }
-    private boolean internetConCheck() {
-        if (internet_connection()){
-            Log.d(TAG, "cool");
-            return true;
-        }else{
-            //create a snackbar telling the user there is no internet connection and issuing a chance to reconnect
-            AlertDialog.Builder alertDialogBuilder= new AlertDialog.Builder(RealActivity.this);
-            alertDialogBuilder
-                    .setMessage("No internet connection")
-                    .setCancelable(false)
-                    .setPositiveButton("Try again ",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                                }
-                            })
-                    .setNegativeButton("EXIT",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    finish();
-                                }
-                            });
-            AlertDialog alertDialog=alertDialogBuilder.create();
-            alertDialog.show();
-        }
-        return false;
-    }
-    boolean internet_connection(){
-        //Check if connected to internet, output accordingly
-        ConnectivityManager cm =
-                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-        return isConnected;
-    }
+//    private boolean internetConCheck() {
+//        if (internet_connection()){
+//            Log.d(TAG, "cool");
+//            return true;
+//        }else{
+//            //create a snackbar telling the user there is no internet connection and issuing a chance to reconnect
+//            AlertDialog.Builder alertDialogBuilder= new AlertDialog.Builder(RealActivity.this);
+//            alertDialogBuilder
+//                    .setMessage("No internet connection")
+//                    .setCancelable(false)
+//                    .setPositiveButton("Try again ",
+//                            new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialogInterface, int i) {
+//                                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
+//                                }
+//                            })
+//                    .setNegativeButton("EXIT",
+//                            new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialogInterface, int i) {
+//                                    finish();
+//                                }
+//                            });
+//            AlertDialog alertDialog=alertDialogBuilder.create();
+//            alertDialog.show();
+//        }
+//        return false;
+//    }
+//    boolean internet_connection(){
+//        //Check if connected to internet, output accordingly
+//        ConnectivityManager cm =
+//                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+//
+//        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+//        boolean isConnected = activeNetwork != null &&
+//                activeNetwork.isConnectedOrConnecting();
+//        return isConnected;
+//    }
 
 }

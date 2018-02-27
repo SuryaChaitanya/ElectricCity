@@ -3,15 +3,15 @@
     package="com.example.anjali.retreivedata">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:icon="@mipmap/icon"
+        android:label="Electric City"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".splashMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,7 +19,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".RealActivity" />
-        <activity android:name=".SelectView"></activity>
+        <activity android:name=".SelectView" />
+        <activity android:name=".splash" />
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>
