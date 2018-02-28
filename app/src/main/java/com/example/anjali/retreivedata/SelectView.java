@@ -62,6 +62,9 @@ public class SelectView extends AppCompatActivity {
             case R.id.week:
                 url = "http://165.227.105.231/sangam/day.php";
                 break;
+            default:
+                Toast.makeText(this,"Please click the options again",Toast.LENGTH_SHORT).show();
+                break;
         }
         show();
     }
@@ -69,6 +72,22 @@ public class SelectView extends AppCompatActivity {
         Intent i = new Intent(this, splash.class);
         i.putExtra("url", url);
         startActivity(i);
+    }
+
+    public void onclicklisterner(View v)
+    {
+        switch(v.getId()) {
+            case R.id.about:
+                Toast.makeText(this, "MADE WITH LOVE BY ELECTRIC CITY", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.control:
+                Intent i = new Intent(this, relay.class);
+                startActivity(i);
+                break;
+            default:
+                Toast.makeText(this,"Please click the options again",Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
     class GetContacts extends AsyncTask<String, Void, String> {
         final String REQUEST_METHOD = "GET";
@@ -203,10 +222,5 @@ public class SelectView extends AppCompatActivity {
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
         return isConnected;
-    }
-    public void about(View v){
-
-        Toast.makeText(this,"MADE WITH LOVE BY ELECTRIC CITY",Toast.LENGTH_LONG).show();
-
     }
 }

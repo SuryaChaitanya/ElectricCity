@@ -33,7 +33,7 @@
         android:layout_weight="1"
         android:layout_margin="13dp">
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:onClick="doneSelection"
             android:text="Month Graph"
@@ -42,13 +42,14 @@
             android:padding="5dp"
             android:id="@+id/month"/>
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:onClick="doneSelection"
             android:text="Week Graph"
+            android:layout_weight="1"
             android:layout_marginLeft="8dp"
             android:id="@+id/week"
-            android:layout_weight="1"/>
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -58,7 +59,7 @@
         android:layout_weight="1"
         android:layout_margin="13dp">
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:onClick="doneSelection"
             android:text="Day Graph"
@@ -66,12 +67,30 @@
             android:layout_marginRight="8dp"
             android:id="@+id/day"/>
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:onClick="about"
+            android:onClick="onclicklisterner"
             android:layout_weight="1"
-            android:text="About Us "
+            android:text="About"
             android:layout_marginLeft="8dp"
             android:id="@+id/about"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_margin="13dp"
+        >
+
+        <Button
+            android:id="@+id/control"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Control your appliance"
+            android:onClick="onclicklisterner"
+
+            />
     </LinearLayout>
 </LinearLayout>

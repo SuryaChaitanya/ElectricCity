@@ -21,7 +21,8 @@
         <activity android:name=".RealActivity" />
         <activity android:name=".SelectView" />
         <activity android:name=".splash" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".relay"></activity>
     </application>
 
 </manifest>
